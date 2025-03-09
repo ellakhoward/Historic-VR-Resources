@@ -1,0 +1,52 @@
+sing UnityEngine;
+
+// This script ensures the canvas is properly sized and always faces the camera
+public class DialogueCanvasHelper : MonoBehaviour
+{
+    private Canvas canvas;
+    private RectTransform panelRect;
+    
+    void Start()
+    {
+        // Get canvas component
+        canvas = GetComponent<Canvas>();
+        
+        // Try to find panel
+        Transform panelTransform = transform.GetChild(0);
+        if (panelTransform != null)
+        {
+            panelRect = panelTransform as RectTransform;
+        }
+        
+        // Set initial size
+        if (canvas != null)
+        {
+            // Make sure it's world space
+            canvas.renderMode = RenderMode.WorldSpace;
+            
+            // Set appropriate scale for VR
+            canvas.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        }
+    }
+    
+    void Update()
+    {
+        // For debugging: press space to toggle visibility
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            canvas.gameObject.SetActive(!canvas.gameObject.activeSelf);
+        }
+    }
+    
+    // This can be called to make the canvas face a specific position (like the camera)
+    public void FaceTarget(Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - transform.position;
+        directionToTarget.y = 0; // Keep upright
+        
+        if (directionToTarget != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(-directionToTarget);
+        }
+    }
+}

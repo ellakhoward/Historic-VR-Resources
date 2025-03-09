@@ -1,0 +1,87 @@
+sing UnityEngine;
+
+public class NPCWalking : MonoBehaviour
+{
+    [Header("Walking Points")]
+    public Transform pointA;
+    public Transform pointB;
+    public float walkSpeed = 0.7f;
+    
+    [Header("Controls")]
+    public bool shouldWalk = true;
+    
+    // References
+    private Transform npcTransform;
+    private bool movingToPointB = true;
+    
+    void Start()
+    {
+        // Get NPC transform (the paper doll image)
+        npcTransform = transform.GetChild(0);
+        
+        if (npcTransform == null)
+        {
+            Debug.LogError("No child found for NPC! Make sure paper doll is the first child.");
+            return;
+        }
+        
+        // Verify walk points are set
+        if (pointA == null || pointB == null)
+        {
+            Debug.LogError("Walking points not set! Please assign Points A and B.");
+            shouldWalk = false;
+        }
+    }
+    
+    void Update()
+    {
+        if (!shouldWalk || pointA == null || pointB == null) return;
+        
+        // Determine current target
+        Transform targetPoint = movingToPointB ? pointB : pointA;
+        
+        // Calculate direction to target (only in X and Z)
+        Vector3 currentPos = transform.position;
+        Vector3 targetPos = targetPoint.position;
+        targetPos.y = currentPos.y; // Keep same height
+        
+        // Move towards target
+        transform.position = Vector3.MoveTowards(
+            currentPos, 
+            targetPos, 
+            walkSpeed * Time.deltaTime
+        );
+        
+        // Face the direction of movement (flip the paper doll)
+        if (npcTransform != null)
+        {
+            Vector3 direction = targetPos - currentPos;
+            if (direction.x != 0)
+            {
+                // Flip the image by scaling
+                Vector3 scale = npcTransform.localScale;
+                scale.x = direction.x > 0 ? 1 : -1;
+                npcTransform.localScale = scale;
+            }
+        }
+        
+        // Check if reached target
+        if (Vector3.Distance(currentPos, targetPos) < 0.1f)
+        {
+            // Switch direction
+            movingToPointB = !movingToPointB;
+        }
+    }
+    
+    // Called by other scripts to pause walking
+    public void StopWalking()
+    {
+        shouldWalk = false;
+    }
+    
+    // Called by other scripts to resume walking
+    public void ResumeWalking()
+    {
+        shouldWalk = true;
+    }
+}

@@ -1,0 +1,135 @@
+using UnityEngine;
+using TMPro;
+
+public class NPCDialogueManager : MonoBehaviour
+{
+    [Header("Dialogue Settings")]
+    public Canvas dialogueCanvas;
+    public TextMeshProUGUI dialogueText;
+    public float detectionRadius = 3f;
+    
+    [Header("Content")]
+    [TextArea(3, 10)]
+    public string dialogueContent = "Welcome to Boston's West End! Before urban renewal in the 1950s, this was a vibrant community where families had lived for generations. The neighborhood was full of life - corner stores, bakeries, and neighbors who looked out for each other.";
+    
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip dialogueAudio;
+    
+    // References
+    private Transform playerTransform;
+    private NPCWalking walkingController;
+    private bool isInteracting = false;
+    
+    void Start()
+    {
+        // Find the player (XR Rig/Camera)
+        playerTransform = Camera.main.transform;
+        
+        // Get walking controller
+        walkingController = GetComponent<NPCWalking>();
+        
+        // Hide dialogue initially
+        if (dialogueCanvas != null)
+        {
+            dialogueCanvas.gameObject.SetActive(false);
+        }
+    }
+    
+    void Update()
+    {
+        if (playerTransform == null) return;
+        
+        // Check distance to player
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        
+        // Start interaction if getting close
+        if (distanceToPlayer <= detectionRadius && !isInteracting)
+        {
+            StartInteraction();
+        }
+        // End interaction if moving away
+        else if (distanceToPlayer > detectionRadius && isInteracting)
+        {
+            EndInteraction();
+        }
+        
+        // If interacting, make dialogue face player
+        if (isInteracting && dialogueCanvas != null)
+        {
+            // Calculate direction to face player
+            Vector3 directionToPlayer = playerTransform.position - dialogueCanvas.transform.position;
+            directionToPlayer.y = 0; // Keep upright
+            
+            // Update rotation to face player
+            if (directionToPlayer != Vector3.zero)
+            {
+                dialogueCanvas.transform.rotation = Quaternion.LookRotation(-directionToPlayer);
+            }
+        }
+    }
+    
+    void StartInteraction()
+    {
+        isInteracting = true;
+        
+        // Stop walking
+        if (walkingController != null)
+        {
+            walkingController.StopWalking();
+        }
+        
+        // Position dialogue canvas in front of the NPC
+        if (dialogueCanvas != null)
+        {
+            // Position high above the NPC for better visibility
+            dialogueCanvas.transform.localPosition = new Vector3(0, 3.0f, 0.9f);
+            dialogueCanvas.gameObject.SetActive(true);
+            
+            // Update dialogue text
+            if (dialogueText != null)
+            {
+                dialogueText.text = dialogueContent;
+                dialogueText.enabled = true; // Force enable
+                Canvas.ForceUpdateCanvases(); // Force UI refresh
+            }
+        }
+        
+        // Play audio
+        if (audioSource != null && dialogueAudio != null && !audioSource.isPlaying)
+        {
+            audioSource.clip = dialogueAudio;
+            audioSource.Play();
+        }
+    }
+    
+    void EndInteraction()
+    {
+        isInteracting = false;
+        
+        // Resume walking
+        if (walkingController != null)
+        {
+            walkingController.ResumeWalking();
+        }
+        
+        // Hide dialogue
+        if (dialogueCanvas != null)
+        {
+            dialogueCanvas.gameObject.SetActive(false);
+        }
+        
+        // Stop audio
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+    }
+    
+    // Optional: Visual radius in Editor
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
+}
