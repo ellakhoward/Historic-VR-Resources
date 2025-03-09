@@ -12,6 +12,8 @@ The `Scripts` folder contains C# scripts for Unity that enable various interacti
 - **DialogueCanvasHelper.cs**: Manages UI elements for dialogue panels
 - **NPCDialogueManager.cs**: Controls dialogue content and audio for NPC interactions
 - **NPCWalking.cs**: Manages NPC movement between waypoints
+- **PictureFrameTrigger.cs**: Displays historical images when users approach specific areas
+- **SkyboxViewpoint.cs**: Creates areas where users can view present-day panoramic skybox imagery
 
 ### Tutorials
 The `Tutorials` folder contains step-by-step markdown guides for implementing various features:
@@ -23,6 +25,8 @@ The `Tutorials` folder contains step-by-step markdown guides for implementing va
 - **Applying Materials to Architectural Models in Unity**: Adding realistic materials to buildings
 - **Creating Building Information Triggers in Unity VR**: Setting up interactive information displays
 - **Setting Up a VR Tour Guide NPC in Unity**: Creating an animated NPC guide with dialogue
+- **Creating Picture Frame Displays**: Setting up historical images that appear when approached
+- **Implementing Present-Day Skybox Viewpoints**: Creating areas where users can see modern-day 360° views
 
 ## Getting Started
 
@@ -33,13 +37,15 @@ The `Tutorials` folder contains step-by-step markdown guides for implementing va
 
 ## Video Tutorials
 
-Each markdown tutorial includes a link to a corresponding video tutorial for visual learners. These screencasts provide detailed demonstrations of the processes described in the written guides.
+Several of the markdown tutorials include a link to a corresponding video tutorial. These screencasts provide detailed demonstrations of the processes described in the written guides.
 
 ## Additional Features
 
-Beyond the core features documented in the tutorials, this project also supports:
-- Photo displays that appear when approaching specific locations
-- Viewpoint areas where users can see modern-day skybox imagery
+This project includes several interactive elements for engaging VR experiences:
+- Information panels that appear when approaching buildings
+- Animated NPC tour guides with audio narration
+- Historical picture frames that display when approached
+- Viewpoint areas where users can see modern-day 360° panoramic views
 - More interaction types being developed (wayfinding features coming soon)
 
 ## Requirements
