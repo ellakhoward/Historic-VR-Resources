@@ -15,19 +15,14 @@ This video follows the **recommended beginner version** of Unity used by the ins
 
 ## Initial Setup
 1. Download and install **Unity Hub**
-2. Install **Unity 2022 LTS**
-
-> **Recommended for beginners:** Unity **2022.3.57f1 LTS** (matches instructor tutorials exactly)  
-> **Advanced users:** You may use another **Unity 2022 LTS** version if you are comfortable adapting instructions
+2. Install **Unity 6000.3.6f1 LTS**
 
 ---
 
 ## Create New Project
 1. Open **Unity Hub**
 2. Click **New Project**
-3. Select a **Unity 2022 LTS** version  
-   - Beginners: **2022.3.57f1 LTS**  
-   - Advanced users: another 2022 LTS version is acceptable
+3. Select **6000.3.6f1**  
 4. Choose **Universal 3D Core (URP)** template
 5. Name your project:  
    **West_End_[YourName]**
