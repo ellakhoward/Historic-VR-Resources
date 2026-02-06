@@ -38,9 +38,6 @@ If something does not look right, raise your hand **now**.
    - Location: anywhere in your project (you can move it later)
    - Name: **any clear name you choose**
 
-> You are not combining scenes this term.  
-> The exact scene name does **not** matter — saving does.
-
 ---
 
 ## Part 2 — Create Stand-In “Buildings”
@@ -149,7 +146,7 @@ You will create **three materials**.
 2. In the **Inspector**, find **Box Collider**
 3. Uncheck it, then re-check it
 
-> Colliders control interaction and physics — we’ll use them later.
+> Colliders control interaction and physics. We’ll use them later.
 
 ---
 
@@ -194,10 +191,3 @@ Upload **one screenshot** showing:
 
 ---
 
-## What We Are *Not* Doing Today
-- No scripts
-- No UI
-- No trigger panels
-- No VR builds
-
-Those come **next class**.
