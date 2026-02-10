@@ -9,7 +9,7 @@ using TMPro;
 public class BuildingTrigger : MonoBehaviour
 {
     [Header("UI Objects")]
-    public GameObject panelObject;      // Added panel reference
+    public GameObject panelObject;
     public GameObject titleTextObject;
     public GameObject descriptionTextObject;
 
@@ -21,101 +21,35 @@ public class BuildingTrigger : MonoBehaviour
     [TextArea(3,10)]
     public string buildingDescription = "Description goes here...";
 
-    private void Start()
+    void Start()
     {
-        Debug.Log("BuildingTrigger script started");
-        
-        // Get the TextMeshProUGUI components
-        if (titleTextObject != null)
-        {
-            titleText = titleTextObject.GetComponent<TextMeshProUGUI>();
-            Debug.Log("Found title text component");
-        }
-        else
-        {
-            Debug.LogWarning("No title text object assigned!");
-        }
+        titleText = titleTextObject.GetComponent<TextMeshProUGUI>();
+        descriptionText = descriptionTextObject.GetComponent<TextMeshProUGUI>();
 
-        if (descriptionTextObject != null)
-        {
-            descriptionText = descriptionTextObject.GetComponent<TextMeshProUGUI>();
-            Debug.Log("Found description text component");
-        }
-        else
-        {
-            Debug.LogWarning("No description text object assigned!");
-        }
+        panelObject.SetActive(false);
+        titleTextObject.SetActive(false);
+        descriptionTextObject.SetActive(false);
+    }
 
-        // Hide everything at start
-        if (panelObject != null)
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            panelObject.SetActive(true);
+            titleText.text = buildingName;
+            descriptionText.text = buildingDescription;
+            titleTextObject.SetActive(true);
+            descriptionTextObject.SetActive(true);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
             panelObject.SetActive(false);
-            Debug.Log("Panel hidden at start");
-        }
-        else
-        {
-            Debug.LogWarning("No panel object assigned!");
-        }
-        
-        if (titleTextObject != null)
             titleTextObject.SetActive(false);
-        if (descriptionTextObject != null)
             descriptionTextObject.SetActive(false);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"Something entered trigger: {other.gameObject.name}");
-        
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Player entered trigger zone!");
-            
-            // Show panel
-            if (panelObject != null)
-            {
-                panelObject.SetActive(true);
-                Debug.Log("Activated panel");
-            }
-            
-            // Show and update text
-            if (titleText != null)
-            {
-                titleText.text = buildingName;
-                titleTextObject.SetActive(true);
-                Debug.Log("Activated title text");
-            }
-            if (descriptionText != null)
-            {
-                descriptionText.text = buildingDescription;
-                descriptionTextObject.SetActive(true);
-                Debug.Log("Activated description text");
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log($"Something exited trigger: {other.gameObject.name}");
-        
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Player exited trigger zone!");
-            
-            // Hide everything
-            if (panelObject != null)
-            {
-                panelObject.SetActive(false);
-                Debug.Log("Deactivated panel");
-            }
-            if (titleTextObject != null)
-                titleTextObject.SetActive(false);
-            if (descriptionTextObject != null)
-                descriptionTextObject.SetActive(false);
         }
     }
 }
-Last edited 1 day ago
-
-
-
