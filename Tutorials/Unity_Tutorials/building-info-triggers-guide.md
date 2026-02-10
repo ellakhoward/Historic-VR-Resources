@@ -1,176 +1,281 @@
-# Creating Building Information Triggers in Unity VR
+# CSAS2000 — Unity Sandbox Lab: Building Information Triggers  
+**Unity 6.3 | Interaction First, Meaning First**
 
-## Video Tutorial (Optional)
-For a detailed visual demonstration, watch the screencast tutorial below.  
-This video follows the instructor’s Unity setup and is most useful if you are using the recommended Unity version.
+This lab takes place in an individual Unity sandbox project.  
+We are proving that **historical information can appear in space through interaction**.
 
-📺 https://go.screenpal.com/watch/cTnTVanhWsX
-
-*Follow these steps after completing the initial Unity VR setup and importing your SketchUp model.*  
-*This tutorial is completed inside your **individual Unity sandbox project**, not a shared team project.*
+We are *not* aiming for visual polish yet.
 
 ---
 
-## 1. Verify Input System (Skip if Already Enabled)
+## Starting Point (Already Completed)
 
-If you enabled the Input System during XR setup, this may already be configured correctly.  
-Only complete this section if instructed or if your triggers are not working.
-
-1. Go to **Edit → Project Settings → Player**
-2. Find **Active Input Handling** under **Other Settings**
-3. Set it to **Input System Package (New)**
-4. Click **Apply** when prompted to restart Unity
-5. Wait for Unity to restart
+You should already have:
+- An **XR Origin (XR Rig)** in the scene
+- A **ground plane**
+- **Two cubes** acting as stand-in buildings
+- Basic materials applied
 
 ---
 
-## 2. Create Scripts Folder
+## Step 0 — Make a Copy of the Scene (Required)
 
-1. In the Project window, right-click in the **Assets** folder
-2. Select **Create → Folder**
-3. Name the folder **Scripts**
-4. All scripts should be saved in this folder (not inside Starter Assets)
+We will duplicate the current scene so we can experiment safely.
 
----
+1. In the **Project** window, locate your current scene file
+2. Right-click → **Duplicate**
+3. Rename the copy:
+4. Double-click the duplicated scene to open it
 
-## 3. Create UI Elements
-
-1. In the Hierarchy, right-click → **UI → Canvas**
-2. In the Canvas, right-click → **UI → Panel**
-3. In the Panel, create two text elements:
-   - Right-click → **UI → Text - TextMeshPro** (twice)
-   - Name them **TitleText** and **DescriptionText**
+You should still see:
+- XR Origin
+- Ground plane
+- Two cubes
+- Light / Volume (if present)
 
 ---
 
-## 4. Set Up Panel and Text
+## Learning Goal
 
-1. Select **Panel** in the Hierarchy:
-   - In the Image component:
-     - Color: **Black (RGB 0,0,0)**
-     - Alpha: **204** (about 80% opacity)
-
-2. Position the Canvas in the scene:
-   - Render Mode: **World Space**
-   - Scale: **X 0.001, Y 0.001, Z 0.001**
-   - Position: **X 0, Y 1.7, Z -3** (adjust relative to your building)
-
-3. Adjust Text settings:
-   - **TitleText**: Font Size **72**, Position Y **50**
-   - **DescriptionText**: Font Size **48**, Position Y **-50**
+By the end of this lab, you will have:
+- A player that can approach a building
+- An information panel that appears when the player gets close
+- Readable text displayed in the scene
 
 ---
 
-## 5. Create and Position Objects
+## Part 1 — Player Setup
 
-For testing, position elements approximately as follows:
+1. Select **XR Origin (XR Rig)** in the Hierarchy
+2. In the Inspector:
+- Set **Tag → Player**
+3. Set Transform:
+- Position: **X 0, Y 0, Z -10**
 
-- **XR Origin**: Position **X 0, Y 0, Z -5**
-- **Main Camera** (under **XR Origin → Camera Offset**): Y **1.6**
-- **Building / Model**: Position **X 0, Y 0, Z 0**
-- **Canvas**: Position **X 0, Y 1.7, Z -3**
-
-Your final layout should follow this logic:
-- Player starts behind the trigger zone
-- Trigger zone is between player and building
-- Information panel appears at eye level when triggered
+If the building feels very close at first, that is okay.  
+We will fix staging later.
 
 ---
 
-## 6. Create Trigger Zone
+## Part 2 — Prepare One Test Building
 
-1. Create an empty GameObject:
-   - Name it **BuildingTriggerZone**
-   - Position: **X 0, Y 1, Z -2** (between camera and building)
+1. Select **one cube**
+2. Rename it:
+3. Set Transform:
+- Position: **X 0, Y 0, Z 0**
+- Scale: **X 6, Y 6, Z 6**
+- Position **Y = 3** (half the height, so it sits on the ground)
 
-2. Add the following components:
-   - **Box Collider**
-     - Check **Is Trigger**
-     - Size: **X 2, Y 2, Z 2**
-   - **Rigidbody**
-     - Check **Is Kinematic**
-     - Uncheck **Use Gravity**
+This cube represents the mass of a building.
 
 ---
 
-## 7. Set Up Main Camera
+## Part 3 — Create a World-Space Canvas
 
-1. Locate **Main Camera** under **XR Origin → Camera Offset**
-2. Add components:
-   - **Capsule Collider**
-     - Height: **1.6**
-     - Radius: **0.3**
-   - **Rigidbody**
-     - Set **Is Kinematic**
-     - Uncheck **Use Gravity**
-3. Set the Camera **Tag** to **Player**
+> **Unity 6.3 note:** The menu is **UI (Canvas)**
 
----
+1. Hierarchy → Right-click → **UI (Canvas) → Canvas**
+2. Rename:
+3. In the Inspector:
+- **Render Mode:** World Space
+- **Scale:**  
+  - X **0.001**  
+  - Y **0.001**  
+  - Z **0.001**
+- **Position:**  
+  - X **0**  
+  - Y **1.7**  
+  - Z **-4**
+- **Rotation:**  
+  - X 0  
+  - Y **180**  
+  - Z 0
 
-## 8. Add BuildingTrigger Script
-
-1. Create a new script:
-   - In **Assets → Scripts**, right-click → **Create → C# Script**
-   - Name it **BuildingTrigger**
-   - Paste in the provided script code
-
-2. Add the script to **BuildingTriggerZone**:
-   - Drag the script onto the object  
-   **or**
-   - Use **Add Component → Scripts → BuildingTrigger**
+The panel may be hard to see at first. This is normal.
 
 ---
 
-## 9. Connect Everything
+## Part 4 — Create the Panel
 
-1. Select **BuildingTriggerZone** in the Hierarchy
-2. In the **BuildingTrigger** component (Inspector):
-   - Drag **Panel** to **Panel Object**
-   - Drag **TitleText** to **Title Text Object**
-   - Drag **DescriptionText** to **Description Text Object**
-3. Enter your building information:
-   - Building name
-   - Building description
+1. Right-click **BuildingInfoCanvas**
+→ **UI (Canvas) → Panel**
+2. Leave the name as **Panel**
 
----
+### Panel Settings
+- Anchor Preset: **Middle Center**
+- Width: **600**
+- Height: **300**
 
-## Testing Your Trigger
-
-1. Make sure all UI elements (Canvas, Panel, TitleText, DescriptionText) are **active**
-2. Test in **Play Mode** (and/or Quest if available)
-3. Walk into the trigger zone:
-   - Panel should appear
-   - Text should display your building information
-4. Walk away:
-   - Panel and text should disappear
-
-> Your instructor will handle most Quest builds.  
-> Focus on correct trigger behavior using **Play Mode**.
+**Image Component**
+- Color: Black
+- Alpha: **204** (semi-transparent)
 
 ---
 
-## Adjusting for Your Building
+## Part 5 — Add Text
 
-Once the basic setup works:
-- Place trigger zones near entrances or viewpoints
-- Adjust Canvas position so it does not block the building
-- Resize trigger zones to fit the space
+### Title Text
+1. Right-click **Panel**
+→ **UI (Canvas) → Text – TextMeshPro**
+2. Rename:
+3. Rect Transform:
+- Width: **560**
+- Height: **80**
+- Pos Y: **50**
+4. Text:
+- Font Size: **72**
+- Alignment: Center
+- Text:
+  ```
+  Historic Building
+  ```
 
 ---
 
-## Troubleshooting
+### Description Text
+1. Right-click **Panel**
+→ **UI (Canvas) → Text – TextMeshPro**
+2. Rename:
+3. Rect Transform:
+- Width: **560**
+- Height: **160**
+- Pos Y: **-50**
+4. Text:
+- Font Size: **48**
+- Alignment: Top Center
+- Text:
+  ```
+  Information about this building appears when you approach.
+  ```
 
-**Script does not appear:**
-- Confirm it is saved in **Assets/Scripts**
-- Check the Console for errors
-- Restart Unity if needed
+---
 
-**Trigger does not activate:**
-- Confirm Main Camera is tagged **Player**
-- Ensure the Box Collider is large enough
-- Verify all Inspector references are assigned
-- Check the Console for error messages
+## Part 6 — Create the Trigger Zone (Important)
 
-**Text is hard to read:**
-- Increase panel opacity
-- Increase font size
+The trigger zone detects when the player is close to the building.
+
+### 6.1 Create the Trigger Object
+1. Hierarchy → Right-click → **Create Empty**
+2. Rename:
+3. Set Transform:
+- Position: **X 0, Y 1, Z -6**
+
+---
+
+### 6.2 Add a Box Collider
+1. Add **Box Collider**
+2. Check:
+- **Is Trigger**
+3. Size:
+- X **2**
+- Y **2**
+- Z **2**
+
+**What this does:**  
+The collider defines the detection space.  
+Because it is a trigger, it does *not* block movement.
+
+---
+
+### 6.3 Add a Rigidbody (Why This Matters)
+1. Add **Rigidbody**
+2. Set:
+- **Is Kinematic** ✔
+- **Use Gravity** ✘
+
+**Why we add a Rigidbody:**  
+Unity requires at least one object in a trigger interaction to have a Rigidbody.
+
+**What “Is Kinematic” means:**  
+- Unity tracks the object
+- Physics are disabled
+- The object exists only for detection, not movement
+
+---
+
+## Part 7 — Create the Script
+
+1. In **Assets**, create a folder named:
+2. Open the folder
+3. Right-click → **Create → Scripting → Empty C# Script**
+4. Name:
+5. Open the script and replace all contents with the **BuildingTrigger** script provided in class
+6. Save the script
+
+### Attach the Script
+1. Select **BuildingTriggerZone**
+2. Drag **BuildingTrigger.cs** onto the Inspector
+
+### Assign References
+In the **BuildingTrigger** component:
+- Panel Object → **Panel**
+- Title Text Object → **TitleText**
+- Description Text Object → **DescriptionText**
+
+---
+
+## Part 8 — Test in Play Mode
+
+1. Press **Play**
+2. Switch to the **Game** tab
+3. Select **XR Origin**
+4. Adjust Position Z:
+- **-10** → building may feel very close
+- **-6** → trigger activates, panel appears
+
+If the text appears backwards:
+- Select **BuildingInfoCanvas**
+- Change **Rotation Y** to **0** or **180** (whichever reads correctly)
+
+---
+
+## Part 9 — Fix the Staging (Expected)
+
+World-space UI behaves like physical objects and often needs adjustment.
+
+1. Select **BuildingInfoCanvas**
+2. Move it **to the side**:
+- X **4**
+- Y **1.7**
+- Z **-6**
+3. If needed, increase scale slightly:
+- **0.002, 0.002, 0.002**
+
+---
+
+## What to Submit
+
+### 1. Screenshot
+Submit **one screenshot** showing:
+- A cube
+- A readable information panel with the title **“Historic Building”**
+
+---
+
+### 2. Written Component (Classwork / Homework)
+
+#### A. Panel Text (Public-Facing)
+Choose **one building** from the West End project files.
+
+- **Title:** 5–10 words  
+- **Description:** **100–150 words**
+
+This text should read like a museum or historical marker.
+
+---
+
+#### B. Interpretation Explanation (Reflection)
+Write **150–250 words** answering:
+- Why did you choose this building?
+- What makes it historically significant?
+- What information did you include, and why?
+- What did you leave out?
+- What additional research or information would you want to make this panel more meaningful?
+
+---
+
+## Key Takeaway
+
+Today you proved that **interaction creates meaning**.  
+Visual refinement will come later.
+
