@@ -60,7 +60,7 @@ We will fix staging later.
 ## Part 2 — Prepare One Test Building
 
 1. Select **one cube**
-2. Rename it:
+2. Rename it: BuildingCube
 3. Set Transform:
 - Position: **X 0, Y 0, Z 0**
 - Scale: **X 6, Y 6, Z 6**
@@ -86,12 +86,6 @@ This cube represents the mass of a building.
   - X **0**  
   - Y **1.7**  
   - Z **-4**
-- **Rotation:**  
-  - X 0  
-  - Y **180**  
-  - Z 0
-
-The panel may be hard to see at first. This is normal.
 
 ---
 
@@ -117,7 +111,7 @@ The panel may be hard to see at first. This is normal.
 ### Title Text
 1. Right-click **Panel**
 → **UI (Canvas) → Text – TextMeshPro**
-2. Rename:
+2. Rename: TitleText
 3. Rect Transform:
 - Width: **560**
 - Height: **80**
@@ -156,7 +150,7 @@ The trigger zone detects when the player is close to the building.
 
 ### 6.1 Create the Trigger Object
 1. Hierarchy → Right-click → **Create Empty**
-2. Rename:
+2. Rename: BuildingTriggerZone
 3. Set Transform:
 - Position: **X 0, Y 1, Z -6**
 
@@ -198,8 +192,8 @@ Unity requires at least one object in a trigger interaction to have a Rigidbody.
 1. In **Assets**, create a folder named:
 2. Open the folder
 3. Right-click → **Create → Scripting → Empty C# Script**
-4. Name:
-5. Open the script and replace all contents with the **BuildingTrigger** script provided in class
+4. Name: BuildingTrigger
+5. Open the script and replace all contents with the **BuildingTrigger** script provided in the Scripts section of this GitHub
 6. Save the script
 
 ### Attach the Script
