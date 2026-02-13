@@ -1,89 +1,287 @@
 # Guide: Applying Materials to Architectural Models in Unity
 
 ## Video Tutorial
-For a detailed visual demonstration, watch the [screencast tutorial](https://go.screenpal.com/watch/cTn3nKnhL59).
+For a detailed visual demonstration of last year's lab where we created textures and materials and applied them to .fbx models exported from SketchUp, watch the [screencast tutorial](https://go.screenpal.com/watch/cTn3nKnhL59).
 
-## Initial Setup and Organization
+# CSAS2000 — Unity 6.3 Lab  
+# Textures and Historic Photo Facades
 
-1. Export your model from SketchUp as an FBX file
+---
 
-2. Select and Download Materials:
-   - Visit Ambient CG or similar site
-   - We don't want to overwhelm the model, so teams should decide on around 5 brick textures and 5 wood textures
-   - Download 1K resolution packages
-   - Each texture package includes: Color, Normal, Roughness, and Ambient Occlusion maps
+# Part 1 — Applying a Texture Material to a Cube (URP)
 
-## Unity Project Organization
+## Objective
+Learn how to:
+- Import texture maps
+- Create a URP material
+- Apply it to geometry
+- Adjust tiling for correct scale
 
-1. Create folders in Project window:
-   - Right-click → Create → Folder
-   - Make two folders:
-     - Materials
-     - Textures
-       - Create Bricks and Wood subfolders
+---
 
-2. Import texture files:
-   - Drag and drop texture packages into appropriate Textures subfolder
-   - Keep organized within Bricks and Wood folders
+## Step 1 — Create Test Geometry
 
-## Creating Materials
+1. In the **Hierarchy**:
+   - Right-click → 3D Object → Cube
+2. Rename the cube: `Brick_Test`
+3. Set **Scale**:
+   - X: 10  
+   - Y: 5  
+   - Z: 0.5  
 
-1. Create new material:
-   - In Project window, go to Materials folder
-   - Right-click → Create → Material
-   - Name it clearly (e.g., "Red_Brick_01", "Dark_Wood_01")
+---
 
-2. Set up the material:
-   - Select your new material
-   - In Inspector, set Shader to "Universal Render Pipeline/Lit"
-   - Assign textures using circle selector for each:
-     - Base Map: Select _Color.jpg
-     - Normal Map: Select _NormalGL.jpg
-     - Metallic Map: Select _Roughness.jpg
-     - Occlusion Map: Select _AmbientOcclusion.jpg
+## Step 2 — Organize the Project
 
-## Applying Materials
+In the **Project** window, create folders:
 
-1. In Scene view, select your FBX model
-2. In Inspector, find Material section
-3. Either:
-   - Drag material from Project window onto model
-   - Or use material selector in Inspector
+- `Materials`
+- `Textures`
+  - `Bricks`
+  - `Wood`
+  - `Facades`
 
-## Adjusting Scale
+---
 
-1. Select material in Project window
-2. In Inspector, find Tiling under Surface Inputs
-3. Start with these values:
-   - X: 0.02 (horizontal)
-   - Y: 0.03 (vertical)
-4. Adjust until texture looks correct scale for your building
+## Step 3 — Import Texture Maps
 
-## Sharing with Team
+Download a **1K** material set from AmbientCG.
 
-1. After creating materials you want to share:
-   - Save your materials and texture files
-   - Upload them to your team's GitHub directory
-   - Let team members know what tiling values worked well
+Place files in:
+`Textures → Bricks`
 
-2. When using shared materials:
-   - Download materials and textures from GitHub
-   - Import them into your Unity project's folders
+You should have:
+- `_Color`
+- `_NormalGL`
+- `_Roughness`
+- `_AmbientOcclusion`
 
-## Troubleshooting
+---
 
-If texture appears solid color:
-- Verify all texture maps are correctly assigned
-- Check tiling values (if too high, texture appears solid)
-- Ensure scene has adequate lighting
-- Try creating fresh material if issues persist
+## Step 4 — Create a Material
 
-## Tips for Success
+1. Go to `Materials` folder.
+2. Right-click → Create → Material.
+3. Name it: `Red_Brick_01`.
 
-- Preview materials on test object before applying to building
-- Keep consistent 1K texture resolution for performance
-- Use clear, descriptive material names
-- Document successful tiling values
-- Check with team before downloading new materials
+Select the material and configure:
+
+**Shader:**  
+`Universal Render Pipeline / Lit`
+
+Assign:
+- **Base Map** → `_Color`
+- **Normal Map** → `_NormalGL`  
+  (Click **Fix Now** if prompted)
+- **Occlusion Map** → `_AmbientOcclusion`
+
+Set:
+- **Metallic = 0**
+- Leave **Metallic Map empty**
+- **Smoothness ≈ 0.15**
+
+> Do not assign the Roughness map directly.
+
+---
+
+## Step 5 — Apply Material to Cube
+
+Either:
+- Drag material onto cube in Scene view  
+OR  
+- Select cube → Mesh Renderer → Assign material
+
+---
+
+## Step 6 — Adjust Tiling
+
+Select the material.
+
+Under **Tiling**:
+
+Start with:
+- X = 0.2
+- Y = 0.2
+
+Adjust until brick scale appears realistic.
+
+---
+
+# Part 2 — Applying a Historic Facade Image to a Quad
+
+## Objective
+Apply a historic building photo correctly to geometry using proper proportions.
+
+---
+
+## Step 1 — Import Facade Image
+
+Place the processed façade image into:
+`Textures → Facades`
+
+Select the image in the Project window.
+
+In Inspector:
+- **Texture Type:** Default
+- **sRGB:** Checked
+- **Max Size:** 1024
+- **Compression:** Normal
+
+Click **Apply**.
+
+---
+
+## Step 2 — Create Facade Material
+
+1. Go to `Materials` folder.
+2. Create → Material.
+3. Name it: `Facade_01`.
+
+Configure:
+
+**Shader:**  
+`Universal Render Pipeline / Lit`
+
+Assign:
+- **Base Map** → façade image
+
+Set:
+- **Metallic = 0**
+- **Smoothness = 0.1–0.2**
+
+---
+
+## Step 3 — Create Quad
+
+1. Hierarchy → Right-click → 3D Object → Quad
+2. Rename: `Facade_01`
+3. Apply the façade material to the quad.
+
+---
+
+## Step 4 — Correct Aspect Ratio
+
+Find image dimensions (example: `1536 × 1024`).
+
+Calculate: Width ÷ Height
+
+Example: 1536 ÷ 1024 = 1.5
+
+Set quad scale so: X ÷ Y = aspect ratio
+
+Examples:
+- X = 1.5, Y = 1
+- X = 7.5, Y = 5
+- X = 15, Y = 10
+
+> Do not distort the image.
+
+---
+
+## Step 5 — Align to Ground
+
+Adjust **Position Y** so the bottom of the façade meets the ground plane.
+
+No floating geometry.
+
+---
+
+# Optional Advanced Section — Recessed Doorway Using Two Quads
+
+This section is optional.
+
+---
+
+## Concept
+
+Create two aligned quads:
+
+- **Back Quad** → Original façade (with door)
+- **Front Quad** → Same façade with doorway area removed
+- Small **Z offset** between them
+
+This creates physical depth between wall and doorway.
+
+---
+
+## Step 1 — Create a Wall-Only Image
+
+Open façade image in Paint.
+
+1. Select doorway area.
+2. Delete it.
+3. Fill that area with brick color.
+4. Save as: `Facade_NoDoor.png`.
+
+You now have:
+- Original façade (with door)
+- Wall-only façade (door removed)
+
+---
+
+## Step 2 — Create Materials
+
+Material 1:
+- Base Map → original façade
+
+Material 2:
+- Base Map → `Facade_NoDoor`
+
+Both:
+- Shader: `URP / Lit`
+- Metallic = 0
+- Smoothness ≈ 0.1–0.2
+
+---
+
+## Step 3 — Create Two Quads
+
+**Back Quad:**
+- Apply original façade material
+- Position Z = 0
+
+**Front Quad:**
+- Apply wall-only material
+- Position Z = 0.02
+
+Both quads must:
+- Have identical scale
+- Align exactly in X and Y
+- Differ only in Z
+
+---
+
+## Result
+
+From straight on:
+Appears flat.
+
+From slight angle:
+Door appears recessed behind wall.
+
+---
+
+# End-of-Class Requirements
+
+Each student must:
+
+1. Add one additional façade to the scene.
+2. Correct its proportions.
+3. Place it next to the demo building.
+4. Take two screenshots:
+   - Demo façade
+   - Their added façade
+5. Submit **5 sentences** explaining:
+   - Which image they used
+   - The source of the image
+   - How they scaled it correctly
+   - What adjustments they made
+   - One observation about working with historic photos in 3D space
+
+
+
+
+
+
 
 Remember: Quality materials can dramatically improve your building's appearance while maintaining good performance. Take time to adjust tiling values for realistic scale.
