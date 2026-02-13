@@ -1,10 +1,7 @@
-# Guide: Applying Materials to Architectural Models in Unity
+# Guide: Textures and Historic Photo Facades
 
 ## Video Tutorial
 For a detailed visual demonstration of last year's lab where we created textures and materials and applied them to .fbx models exported from SketchUp, watch the [screencast tutorial](https://go.screenpal.com/watch/cTn3nKnhL59).
-
-# CSAS2000 — Unity 6.3 Lab  
-# Textures and Historic Photo Facades
 
 ---
 
