@@ -4,52 +4,31 @@
 // See detailed instruction video on Brightspace as well as written guide there
 // BuildingTrigger.cs
 using UnityEngine;
-using TMPro;
 
 public class BuildingTrigger : MonoBehaviour
 {
-    [Header("UI Objects")]
+    [Header("Assign the whole panel Canvas (or Panel root) here")]
     public GameObject panelObject;
-    public GameObject titleTextObject;
-    public GameObject descriptionTextObject;
 
-    private TextMeshProUGUI titleText;
-    private TextMeshProUGUI descriptionText;
-
-    [Header("Building Information")]
-    public string buildingName = "Historic Building";
-    [TextArea(3,10)]
-    public string buildingDescription = "Description goes here...";
-
-    void Start()
+    private void Start()
     {
-        titleText = titleTextObject.GetComponent<TextMeshProUGUI>();
-        descriptionText = descriptionTextObject.GetComponent<TextMeshProUGUI>();
-
-        panelObject.SetActive(false);
-        titleTextObject.SetActive(false);
-        descriptionTextObject.SetActive(false);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            panelObject.SetActive(true);
-            titleText.text = buildingName;
-            descriptionText.text = buildingDescription;
-            titleTextObject.SetActive(true);
-            descriptionTextObject.SetActive(true);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
+        if (panelObject != null)
             panelObject.SetActive(false);
-            titleTextObject.SetActive(false);
-            descriptionTextObject.SetActive(false);
-        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        if (panelObject != null)
+            panelObject.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        if (panelObject != null)
+            panelObject.SetActive(false);
     }
 }
