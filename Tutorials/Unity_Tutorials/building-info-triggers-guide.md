@@ -24,7 +24,7 @@ We will duplicate the current scene so we can experiment safely.
 
 1. In the **Project** window, locate your current scene file
 2. Right-click → **Duplicate**
-3. Rename the copy:
+3. Rename the copy: Something you want
 4. Double-click the duplicated scene to open it
 
 You should still see:
@@ -75,7 +75,7 @@ This cube represents the mass of a building.
 > **Unity 6.3 note:** The menu is **UI (Canvas)**
 
 1. Hierarchy → Right-click → **UI (Canvas) → Canvas**
-2. Rename:
+2. Rename: BuildingInfoCanvas
 3. In the Inspector:
 - **Render Mode:** World Space
 - **Scale:**  
